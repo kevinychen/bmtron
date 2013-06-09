@@ -1,0 +1,26 @@
+# init.txt
+#
+# Enter a line for each player, in the form
+# [name],[color],[control],[keys]
+#
+# [name] can be any string containing no commas.
+# [color] should be a valid color in the standard java.awt.Color class, e.g.
+#     BLUE, RED, GREEN, YELLOW, ORANGE, CYAN, MAGENTA, PINK.
+#     Since the background color is BLACK and the invincibility color is WHITE,
+#     avoid these colors.
+# [control] should be either HUMAN for human control, or COMPUTER for computer
+#     control (default).
+# [keys] should be specified if the corresponding control is HUMAN, and denotes
+#     what keys are used to control the player. The valid options are
+#     WASD, TFGH, IJKL, ARROWS.
+#
+# Comments should be preceded by the '#' character, as shown here.
+
+Kevin Y. Chen,BLUE,HUMAN,WASD
+Fanhal,RED,HUMAN,ARROWS
+Computer1,GREEN,COMPUTER
+Computer2,YELLOW,COMPUTER
+
+#Uncomment for more players
+Computer3,ORANGE,COMPUTER
+#Computer4,CYAN,COMPUTER

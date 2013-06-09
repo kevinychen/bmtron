@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -25,15 +26,88 @@ final class MyPanel extends JPanel
 {
     private static final long serialVersionUID = 1L;
 
-    final static int NUM_PLAYERS = 4;
-    final static String[] PLAYER_NAMES =
-    { "Kevin", "Fanhal", "Computer1", "Computer2" };
-    final static Color[] PLAYER_COLORS =
-    { Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW };
-    final static Control[] PLAYER_CONTROL =
-    { Control.HUMAN, Control.HUMAN, Control.COMPUTER, Control.COMPUTER };
-    final static KeySet[] PLAYER_KEYS =
-    { KeySet.WASD, KeySet.ARROWS, KeySet.IJKL, KeySet.ARROWS };
+    static int NUM_PLAYERS;
+    static String[] PLAYER_NAMES;
+    static Color[] PLAYER_COLORS;
+    static Control[] PLAYER_CONTROL;
+    static KeySet[] PLAYER_KEYS;
+
+    static void load()
+    {
+        try
+        {
+            Scanner input = new Scanner(new File("init.txt"));
+            List<String[]> data = new ArrayList<String[]>();
+            while (input.hasNextLine())
+            {
+                String line = input.nextLine();
+                if (line.contains("#"))
+                    line = line.substring(0, line.indexOf("#"));
+                line = line.trim();
+                if (!line.isEmpty())
+                    data.add(line.split(","));
+            }
+            NUM_PLAYERS = data.size();
+            PLAYER_NAMES = new String[NUM_PLAYERS];
+            PLAYER_COLORS = new Color[NUM_PLAYERS];
+            PLAYER_CONTROL = new Control[NUM_PLAYERS];
+            PLAYER_KEYS = new KeySet[NUM_PLAYERS];
+            for (int i = 0; i < NUM_PLAYERS; i++)
+            {
+                String[] params = data.get(i);
+                PLAYER_NAMES[i] = params[0];
+                try
+                {
+                    PLAYER_COLORS[i] = (Color) Color.class.getField(params[1])
+                            .get(null);
+                }
+                catch (Exception e)
+                {
+                    JOptionPane.showMessageDialog(null, "Error: color '"
+                            + params[1] + "' doesn't exist.");
+                    PLAYER_COLORS[i] = Color.GRAY;
+                }
+                try
+                {
+                    PLAYER_CONTROL[i] = (Control) Control.class.getField(
+                            params[2]).get(null);
+                }
+                catch (Exception e)
+                {
+                    JOptionPane.showMessageDialog(null, "Error: control '"
+                            + params[2]
+                            + "' doesn't exist; assuming 'COMPUTER'.");
+                    PLAYER_CONTROL[i] = Control.COMPUTER;
+                }
+                try
+                {
+                    if (PLAYER_CONTROL[i] == Control.HUMAN)
+                        PLAYER_KEYS[i] = (KeySet) KeySet.class.getField(
+                                data.get(i)[3]).get(null);
+                }
+                catch (Exception e)
+                {
+                    JOptionPane.showMessageDialog(null, "Error: key set '"
+                            + params[3] + "' doesn't exist.");
+                    PLAYER_KEYS[i] = KeySet.NULL;
+                }
+            }
+            input.close();
+        }
+        catch (IOException e)
+        {
+            JOptionPane.showMessageDialog(null,
+                    "Error: could not find init.txt file. Exiting.");
+            System.exit(0);
+        }
+        if (NUM_PLAYERS == 0)
+        {
+            JOptionPane.showMessageDialog(null,
+                    "Error: need at least one player. Exiting.");
+            System.exit(0);
+        }
+    }
+
     final static int SPEED = 40;
     final static int TILE_SIZE = 10;
     final static Color BACKGROUND = Color.BLACK;

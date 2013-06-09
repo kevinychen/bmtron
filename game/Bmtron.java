@@ -53,6 +53,7 @@ final public class Bmtron
 
     public static void main(String... args)
     {
+        MyPanel.load();
         frame = new JFrame();
         menu();
     }
