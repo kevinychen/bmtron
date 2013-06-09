@@ -91,9 +91,12 @@ final class MyPanel extends JPanel
         // extra
         try
         {
-            portalImage = ImageIO.read(new File("portal.gif"));
-            invincibilityImage = ImageIO.read(new File("invincibility.gif"));
-            bombImage = ImageIO.read(new File("bomb.gif"));
+            portalImage = ImageIO.read(new File("portal.png"))
+                    .getScaledInstance(TILE_SIZE, TILE_SIZE, 0);
+            invincibilityImage = ImageIO.read(new File("invincibility.jpg"))
+                    .getScaledInstance(TILE_SIZE, TILE_SIZE, 0);
+            bombImage = ImageIO.read(new File("bomb.jpg")).getScaledInstance(
+                    TILE_SIZE, TILE_SIZE, 0);
         }
         catch (IOException e)
         {
@@ -103,8 +106,8 @@ final class MyPanel extends JPanel
 
     public void paintComponent(Graphics g)
     {
-        for (int i = 0; i < getSize().height / TILE_SIZE; i++)
-            for (int j = 0; j < getSize().width / TILE_SIZE; j++)
+        for (int i = 0; i < grid.height; i++)
+            for (int j = 0; j < grid.width; j++)
                 if (SPECIALS && grid.colors[i][j].equals(PORTAL_COLOR))
                     g.drawImage(portalImage, j * TILE_SIZE, i * TILE_SIZE, null);
                 else if (SPECIALS

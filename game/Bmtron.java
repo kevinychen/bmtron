@@ -43,15 +43,15 @@ final public class Bmtron
         frame = new JFrame("BM-TRON!");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setSize(size.width, size.height);
+        frame.setSize(size.width - 60, size.height - 60);
         frame.setResizable(false);
         MyPanel panel = new MyPanel();
-        frame.add(panel);
         frame.setVisible(true);
+        frame.add(panel);
         panel.reset();
     }
 
-    public static void main(String ... kevy)
+    public static void main(String... args)
     {
         frame = new JFrame();
         menu();
